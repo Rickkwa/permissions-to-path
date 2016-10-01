@@ -21,7 +21,7 @@ while true; do
         -r|--reverse)
             shift ;;
         --) shift; break ;;
-        *) echo "ASD123"; break ;;
+        *) break ;;
     esac
 done
 
