@@ -47,11 +47,10 @@ if [ -z $1 ]; then
 else
     curpath=$1
 fi
-
 curpath=`readlink -f $curpath`
 
 # Check that the path exists
-if [ ! -f $curpath ] && [ ! -d $curpath ]; then
+if [ ! -f "$curpath" ] && [ ! -d "$curpath" ]; then
     echo "Error: the path does not exist"
     exit 1
 fi
@@ -59,7 +58,7 @@ fi
 paths="/"
 while [ "$curpath" != "/" ]; do
     paths="$paths $curpath"
-    curpath=`dirname $curpath`
+    curpath=`dirname "$curpath"`
 done
 ls -ld $lsColor $lsReverse $paths
 
