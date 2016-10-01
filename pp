@@ -28,6 +28,7 @@ while true; do
             lsColor="--color"
             shift ;;
         -r|--reverse)
+            lsReverse="--reverse"
             shift ;;
         --) shift; break ;;
         *) break ;;
@@ -55,17 +56,18 @@ if [ ! -f $curpath ] && [ ! -d $curpath ]; then
     exit 1
 fi
 
+paths="/"
 while [ "$curpath" != "/" ]; do
-    ls -ld $lsColor $curpath
+    paths="$paths $curpath"
     curpath=`dirname $curpath`
 done
-ls -ld $lsColor $curpath # List permissions to /
-
+ls -ld $lsColor $lsReverse $paths
 
 # TODO:
 # - test for symbolic links
+# - test for spaces in path?
 
 # Options:
-# - reverse output order
 # - follow symlinks - ie. given an option, will use the actual path instead of a symlink
+# - option to only list path and permissions (don't list owner, group, times, etc)
 
