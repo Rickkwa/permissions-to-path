@@ -63,11 +63,4 @@ while [ "$curpath" != "/" ]; do
 done
 ls -ld $lsColor $lsReverse $paths
 
-# TODO:
-# - test for symbolic links
-# - test for spaces in path?
-
-# Options:
-# - follow symlinks - ie. given an option, will use the actual path instead of a symlink
-# - option to only list path and permissions (don't list owner, group, times, etc)
 
