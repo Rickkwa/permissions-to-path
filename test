@@ -1,0 +1,13 @@
+
+foo() {
+    echo $1 $2
+}
+
+
+echo $1 $2
+
+foo "asd" "dsa"
+
+echo $1 $2
+
+

@@ -1,8 +1,17 @@
 #!/bin/bash
 
 print_usage() {
-    echo "Usage: $0"
+    cat << EOF
+Usage: $0 [OPTIONS] [PATH]
+List the permissions for all the directories on the way to the given path.
+
+OPTIONS:
+    -c, --color		Display the directory/file with colors through 'ls --color'.
+    -r, --reverse	Display the permissions in reverse order (shows the permission to the given path last).
+    --help			Shows usage information for this tool.
+EOF
 }
+
 
 # Parse flag arguments
 ARGS=$(getopt -o 'rc' --long color,reverse,help -n "$0" -- "$@")
@@ -40,21 +49,23 @@ fi
 
 curpath=`readlink -f $curpath`
 
+# Check that the path exists
+if [ ! -f $curpath ] && [ ! -d $curpath ]; then
+    echo "Error: the path does not exist"
+    exit 1
+fi
+
 while [ "$curpath" != "/" ]; do
     ls -ld $lsColor $curpath
     curpath=`dirname $curpath`
 done
+ls -ld $lsColor $curpath # List permissions to /
 
 
 # TODO:
-# - check that the path exists before listing permissions
-#     - what happens if it doesn't exist? Exit gracefully with error msg? Ignore this folder and keep traversing up?
-#     - if path exists and is a file, list it anyways ls -l, else it is a directory then use ls -ld
 # - test for symbolic links
 
 # Options:
 # - reverse output order
 # - follow symlinks - ie. given an option, will use the actual path instead of a symlink
-# - --color to use ls --color
 
-# Usage message
