@@ -6,15 +6,16 @@ Usage: $0 [OPTIONS] [PATH]
 List the permissions for all the directories on the way to the given path.
 
 OPTIONS:
-    -c, --color		Display the directory/file with colors through 'ls --color'.
-    -r, --reverse	Display the permissions in reverse order (shows the permission to the given path last).
-    --help			Shows usage information for this tool.
+    -c, --color         Display the directory/file with colors through 'ls --color'.
+    -r, --reverse       Display the permissions in reverse order (shows the permission to the given path last).
+    -s                  Do not resolve symlinks
+    --help              Shows usage information for this tool.
 EOF
 }
 
 
 # Parse flag arguments
-ARGS=$(getopt -o 'rc' --long color,reverse,help -n "$0" -- "$@")
+ARGS=$(getopt -o 'rcs' --long color,reverse,help -n "$0" -- "$@")
 if [ $? -ne 0 ]; then
 	echo "Try running '$0 --help' for more information."
     exit 2
@@ -29,6 +30,9 @@ while true; do
             shift ;;
         -r|--reverse)
             lsReverse="--reverse"
+            shift ;;
+        -s)
+            realpathSymlinks="-s"
             shift ;;
         --) shift; break ;;
         *) break ;;
@@ -47,7 +51,7 @@ if [ -z $1 ]; then
 else
     curpath=$1
 fi
-curpath=`readlink -f $curpath`
+curpath=`realpath $realpathSymlinks $curpath`
 
 # Check that the path exists
 if [ ! -f "$curpath" ] && [ ! -d "$curpath" ]; then
